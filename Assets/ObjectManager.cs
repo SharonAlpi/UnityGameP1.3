@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PlaceObject : MonoBehaviour
+public class ObjectManager : MonoBehaviour
 {
     [Serializable]
     public class GameObjectEntry
@@ -21,10 +21,26 @@ public class PlaceObject : MonoBehaviour
     private IDictionary<string, Object2D> createdObjects = new Dictionary<string, Object2D>();
     public Object2DClient client;
     public string EnvironmentID = "c19ee900-3c4b-4551-88b7-b0aae18f0fc0";
-    public async void Start()
+    public static ObjectManager instance { get; private set; }
+public async void Start()
     {
         RegisterdGameObjectsList.ForEach(entry => RegisterdGameObjects[entry.key] = entry.value);
         await InitializeObjects();
+    }
+
+    void Awake()
+    {
+        // hier controleren we of er al een instantie is van deze singleton
+        // als dit zo is dan hoeven we geen nieuwe aan te maken en verwijderen we deze
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            instance = this;
+        }
+        DontDestroyOnLoad(this);
     }
     public async void Update()
     {

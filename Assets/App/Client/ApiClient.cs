@@ -9,10 +9,26 @@ public class ApiClient : MonoBehaviour
 {
     public string baseUrl;
     private string token;
+    public static ApiClient instance { get; private set; }
 
     public void SetToken(string token)
     {
         this.token = token;
+    }
+
+    void Awake()
+    {
+        // hier controleren we of er al een instantie is van deze singleton
+        // als dit zo is dan hoeven we geen nieuwe aan te maken en verwijderen we deze
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            instance = this;
+        }
+        DontDestroyOnLoad(this);
     }
 
     public async Awaitable<IApiResponse> SendGetRequest(string route)

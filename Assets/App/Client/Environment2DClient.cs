@@ -36,4 +36,12 @@ public class Environment2DClient : MonoBehaviour
         var route = "/Environment2D/" + envId;
         return await client.SendDeleteRequest(route);
     }
+
+    public async Awaitable<IApiResponse> AddEnvironment(Environment2D environment)
+    {
+        string data = JsonUtility.ToJson(environment);
+
+        var route = "Environment2D";
+        return await client.SendPostRequest(route, data);
+    }
 }
