@@ -27,13 +27,13 @@ public class LoginManager : MonoBehaviour
         var user = new User
         {
             Password = passwordInput,
-            Name = emailInput,
+            Email = emailInput,
         };
         var response = await client.Login(user);
         switch (response)
         {
             case ApiResponse<string> res:
-                SceneManager.LoadScene("environment", LoadSceneMode.Single);
+                SceneManager.LoadScene("Environments", LoadSceneMode.Single);
                 break;
             case ApiError error:
                 errorMessage.SetText(error.errorMessage); 
@@ -47,18 +47,20 @@ public class LoginManager : MonoBehaviour
         var emailInput = email.text;
         var passwordInput = password.text;
         Debug.Log("Register: user:"+ emailInput + "; ww:"+passwordInput);
-        return;
+        //return;
         var user = new User
         {
             Password = passwordInput,
-            Name = emailInput,
+            Email = emailInput,
         };
         var response = await client.Register(user);
         switch (response)
         {
             case ApiResponse<string> res:
+                SceneManager.LoadScene("Login", LoadSceneMode.Single);
                 break;
             case ApiError error:
+
                 errorMessage.SetText(error.errorMessage);
                 break;
             default:

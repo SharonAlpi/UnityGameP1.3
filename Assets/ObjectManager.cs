@@ -20,7 +20,7 @@ public class ObjectManager : MonoBehaviour
  
     private IDictionary<string, Object2D> createdObjects = new Dictionary<string, Object2D>();
     public Object2DClient client;
-    public string EnvironmentID = "c19ee900-3c4b-4551-88b7-b0aae18f0fc0";
+    public string EnvironmentID = "<environment id>";
     public static ObjectManager instance { get; private set; }
 public async void Start()
     {
@@ -69,7 +69,6 @@ public async void Start()
         {
             positionX = mousePositon.x,
             positionY = mousePositon.y,
-            // need env id
             environmentId = EnvironmentID,
             rotationZ = 0,
             scaleX = 1, 
@@ -99,7 +98,6 @@ public async void Start()
                 objs.data.ToList().ForEach(obj => {
                     createdObjects.Add(obj.id, obj);
                     Vector3 objPos = new Vector3(obj.positionX, obj.positionY, 0);
-                 
                     Instantiate(RegisterdGameObjects[obj.prefabId], objPos, Quaternion.identity);
                 });
                 break;

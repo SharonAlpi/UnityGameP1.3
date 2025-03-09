@@ -3,12 +3,11 @@ using UnityEngine;
 
 public class Environment2DClient : MonoBehaviour
 {
-    public ApiClient client;
 
     public async Awaitable<IApiResponse> ReadEnvironments()
     {
         var route = "/Environment2D";
-        IApiResponse response = await client.SendGetRequest(route);
+        IApiResponse response = await ApiClient.instance.SendGetRequest(route);
         switch (response)
         {
             case ApiResponse<string> res:
@@ -21,7 +20,7 @@ public class Environment2DClient : MonoBehaviour
     public async Awaitable<IApiResponse> ReadEnvironment(string envId)
     {
         var route = "/Environment2D/" + envId;
-        IApiResponse response = await client.SendGetRequest(route);
+        IApiResponse response = await ApiClient.instance.SendGetRequest(route);
         switch (response)
         {
             case ApiResponse<string> res:
@@ -34,14 +33,14 @@ public class Environment2DClient : MonoBehaviour
     public async Awaitable<IApiResponse> DeleteEnvironment(string envId)
     {
         var route = "/Environment2D/" + envId;
-        return await client.SendDeleteRequest(route);
+        return await ApiClient.instance.SendDeleteRequest(route);
     }
 
     public async Awaitable<IApiResponse> AddEnvironment(Environment2D environment)
     {
         string data = JsonUtility.ToJson(environment);
 
-        var route = "Environment2D";
-        return await client.SendPostRequest(route, data);
+        var route = "/Environment2D";
+        return await ApiClient.instance.SendPostRequest(route, data);
     }
 }

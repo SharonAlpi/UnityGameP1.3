@@ -26,14 +26,8 @@ public class EnvironmentManager : MonoBehaviour
                 for (var i = 0; i < environments.Count; i++)
                 {
                     // list all the environments under eachother
-                    var position = new Vector3(0, 250 - (i * 30), 0);
-                    var gameObject = Instantiate(WorldPrefab, position, Quaternion.identity);
-                    Button tempButton = gameObject.GetComponent<Button>();
-                    tempButton.onClick.AddListener(() =>
-                    {
-                        ObjectManager.instance.EnvironmentID = environments[i].id;
-                        SceneManager.LoadScene("game", LoadSceneMode.Single);
-                    });
+                    var position = new Vector3(0, 250 - (i * 60), 0);
+                    instantiateObject(position, environments[i]);
                 }
                 break;
             case ApiError error:
@@ -42,6 +36,32 @@ public class EnvironmentManager : MonoBehaviour
             default:
                 throw new NotImplementedException("No implementation for ApiResponse of class: " + response.GetType());
         }
+    }
+
+    public void instantiateObject(Vector3 pos, Environment2D env)
+    {
+        var gameObject = Instantiate(WorldPrefab, pos, Quaternion.identity);
+        // make sure the object is a child of the canvas
+        gameObject.transform.SetParent(GameObject.Find("Canvas").transform, false);
+        // set the name of the object
+        Text nameComponent = gameObject.transform.Find("WorldName")?.GetComponent<Text>();
+        if (nameComponent != null)
+        {
+            nameComponent.text = env.name;
+        }
+        Text sizeComponent = gameObject.transform.Find("Size")?.GetComponent<Text>();
+        if (sizeComponent != null)
+        {
+            sizeComponent.text = $"W:{env.maxLength}\nH:{env.maxHeight}";
+        }
+
+
+        Button tempButton = gameObject.GetComponent<Button>();
+        tempButton.onClick.AddListener(() =>
+        {
+            ObjectManager.instance.EnvironmentID = env.id;
+            SceneManager.LoadScene("Game", LoadSceneMode.Single);
+        });
     }
 
     public async void CreateNewWorld()
@@ -62,7 +82,7 @@ public class EnvironmentManager : MonoBehaviour
         switch (response)
         {
             case ApiResponse<string> res:
-                SceneManager.LoadScene("environment", LoadSceneMode.Single);
+                SceneManager.LoadScene("Environments", LoadSceneMode.Single);
                 break;
             case ApiError error:
                 Debug.Log(error.errorMessage);
@@ -70,6 +90,5 @@ public class EnvironmentManager : MonoBehaviour
             default:
                 throw new NotImplementedException("No implementation for ApiResponse of class: " + response.GetType());
         }
-
     }
 }

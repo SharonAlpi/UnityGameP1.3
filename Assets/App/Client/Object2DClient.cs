@@ -4,13 +4,11 @@ using NUnit;
 using UnityEngine;
 
 public class Object2DClient : MonoBehaviour
-{
-    public ApiClient client;
-    
+{    
     public async Awaitable<IApiResponse> ReadObjects(string env)
     {
         var route = "/Environment2D/" + env + "/Object2D";
-        IApiResponse response = await client.SendGetRequest(route);
+        IApiResponse response = await ApiClient.instance.SendGetRequest(route);
         switch (response) 
         {
             case ApiResponse<string> res:
@@ -25,7 +23,7 @@ public class Object2DClient : MonoBehaviour
         string data = JsonUtility.ToJson(obj);
         var route = "/Environment2D/" + obj.environmentId + "/Object2D";
 
-        IApiResponse response = await client.SendPostRequest(route, data);
+        IApiResponse response = await ApiClient.instance.SendPostRequest(route, data);
         switch (response) 
         {
             case ApiResponse<string> res: 
@@ -39,7 +37,7 @@ public class Object2DClient : MonoBehaviour
     {
         var route = "/Environment2D/" + obj.environmentId + "/Object2D/" + obj.environmentId;
         string data = JsonUtility.ToJson(obj);
-        return await client.SendPutRequest(route, data);
+        return await ApiClient.instance.SendPutRequest(route, data);
     }
 
 

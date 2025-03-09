@@ -14,6 +14,7 @@ public class ApiClient : MonoBehaviour
     public void SetToken(string token)
     {
         this.token = token;
+        Debug.Log(this.token);
     }
 
     void Awake()
@@ -80,6 +81,7 @@ public class ApiClient : MonoBehaviour
 
     private void AddToken(UnityWebRequest webRequest)
     {
+        Debug.Log("Adding token: " + token);
         webRequest.SetRequestHeader("Authorization", "Bearer " + token);
     }
 
@@ -94,5 +96,7 @@ public class ApiClient : MonoBehaviour
 public class Token
 {
     public string tokenType;
+    public int expiresIn;
+    public string refreshToken;
     public string accessToken;
 }
