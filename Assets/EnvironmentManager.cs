@@ -26,7 +26,7 @@ public class EnvironmentManager : MonoBehaviour
                 for (var i = 0; i < environments.Count; i++)
                 {
                     // list all the environments under eachother
-                    var position = new Vector3(-250, 250 - (i * 60), 0);
+                    var position = new Vector3(-250, 375 - (i * 175), 0);
                     instantiateObject(position, environments[i]);
                 }
                 break;

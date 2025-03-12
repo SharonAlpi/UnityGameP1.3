@@ -54,7 +54,7 @@ public async void Start()
         this.currentObject = new GameObjectEntry();
         this.currentObject.key = prefabId;
         this.currentObject.value = RegisterdGameObjects[prefabId];
-        //
+        
     }
 
     private bool IsPointerOverUI()
