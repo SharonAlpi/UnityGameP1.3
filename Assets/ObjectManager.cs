@@ -20,7 +20,7 @@ public class ObjectManager : MonoBehaviour
  
     private IDictionary<string, Object2D> createdObjects = new Dictionary<string, Object2D>();
     public Object2DClient client;
-    public string EnvironmentID = "<environment id>";
+    public static string EnvironmentID = "<environment id>";
     public static ObjectManager instance { get; private set; }
 public async void Start()
     {

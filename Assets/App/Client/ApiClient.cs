@@ -75,7 +75,7 @@ public class ApiClient : MonoBehaviour
             case UnityWebRequest.Result.Success:
                 return new ApiResponse<string>(req.downloadHandler.text);
             default:
-                return new ApiError(req.error);
+                return new ApiError(req.error, (int)req.responseCode);
         }
     }
 

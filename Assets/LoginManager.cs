@@ -36,7 +36,14 @@ public class LoginManager : MonoBehaviour
                 SceneManager.LoadScene("Environments", LoadSceneMode.Single);
                 break;
             case ApiError error:
-                errorMessage.SetText(error.errorMessage); 
+                if (error.statusCode == 401)
+                {
+                    errorMessage.SetText("Wrong email or password."); 
+                }
+                else
+                {
+                    errorMessage.SetText("Something went wrong, try again later");
+                }
                 break;
             default:
                 throw new NotImplementedException("No implementation for ApiResponse of class: " + response.GetType());

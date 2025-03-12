@@ -26,7 +26,7 @@ public class EnvironmentManager : MonoBehaviour
                 for (var i = 0; i < environments.Count; i++)
                 {
                     // list all the environments under eachother
-                    var position = new Vector3(0, 250 - (i * 60), 0);
+                    var position = new Vector3(-250, 250 - (i * 60), 0);
                     instantiateObject(position, environments[i]);
                 }
                 break;
@@ -44,26 +44,45 @@ public class EnvironmentManager : MonoBehaviour
         // make sure the object is a child of the canvas
         gameObject.transform.SetParent(GameObject.Find("Canvas").transform, false);
         // set the name of the object
-        Text nameComponent = gameObject.transform.Find("WorldName")?.GetComponent<Text>();
+        TMP_Text nameComponent = gameObject.transform.Find("WorldName")?.GetComponent<TMP_Text>();
         if (nameComponent != null)
         {
-            nameComponent.text = env.name;
+            nameComponent.SetText(env.name);
         }
-        Text sizeComponent = gameObject.transform.Find("Size")?.GetComponent<Text>();
-        if (sizeComponent != null)
-        {
-            sizeComponent.text = $"W:{env.maxLength}\nH:{env.maxHeight}";
-        }
+        //Text sizeComponent = gameObject.transform.Find("Size")?.GetComponent<Text>();
+        //if (sizeComponent != null)
+        //{
+        //    sizeComponent.text = $"W:{env.maxLength}\nH:{env.maxHeight}";
+        //}
 
 
-        Button tempButton = gameObject.GetComponent<Button>();
-        tempButton.onClick.AddListener(() =>
+        Button loadButton = gameObject.transform.Find("LoadButton").GetComponent<Button>();
+        loadButton.onClick.AddListener(() =>
         {
-            ObjectManager.instance.EnvironmentID = env.id;
+            ObjectManager.EnvironmentID = env.id;
             SceneManager.LoadScene("Game", LoadSceneMode.Single);
         });
+        Button deleteButton = gameObject.transform.Find("DeleteButton").GetComponent<Button>();
+        deleteButton.onClick.AddListener(async () =>
+        {
+            await Deleteworld(env.id);
+            SceneManager.LoadScene("Environments", LoadSceneMode.Single);
+        });
     }
-
+    public async Awaitable Deleteworld(string envId)
+    {
+        var response = await client.DeleteEnvironment(envId);
+        switch (response)
+        {
+            case ApiResponse<string> res:
+                break;
+            case ApiError error:
+                Debug.Log(error.errorMessage);
+                break;
+            default:
+                throw new NotImplementedException("No implementation for ApiResponse of class: " + response.GetType());
+        }
+    }
     public async void CreateNewWorld()
     {
         var nameInput = environmentName.text;
